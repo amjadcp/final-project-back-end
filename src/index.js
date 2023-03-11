@@ -15,11 +15,6 @@ const notFoundMiddleware = require("./middleware/notFound");
 const fileUpload = require("express-fileupload");
 const errorWrapper = require("./middleware/errorWrapper");
 
-// const swaggerUI = require("swagger-ui-express")
-// const YAML = require('yamljs')
-// const swaggerJsDocs = YAML.load(`${__dirname}/documentation/api.yml`)
-
-
 
 db.connect();
 
@@ -55,9 +50,6 @@ app.use(fileUpload({
 	createParentPath: true,
 	limits: { fileSize: 50 * 1024 * 1024 }
 }));
-
-// api doc
-// app.use('/api-doc', swaggerUI.serve, swaggerUI.setup(swaggerJsDocs))
 
 app.use('/api/v1', errorWrapper(require('./routers/index')))
 app.use(notFoundMiddleware);
