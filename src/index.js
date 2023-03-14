@@ -13,7 +13,7 @@ const xss = require("xss-clean");
 const mongoSanitize = require("express-mongo-sanitize");
 const notFoundMiddleware = require("./middleware/notFound");
 const fileUpload = require("express-fileupload");
-const errorWrapper = require("./middleware/errorWrapper");
+const {errorWrapper} = require("./middleware/errorWrapper");
 
 
 db.connect();
