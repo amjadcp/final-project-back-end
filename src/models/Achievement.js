@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const validator = require("validator");
 
-const Achivement = mongoose.Schema({
+const Achievement = mongoose.Schema({
     user: {
         type: mongoose.Types.ObjectId,
         ref: 'user',
@@ -16,3 +16,6 @@ const Achivement = mongoose.Schema({
         default: Date.now
     }
 })
+
+
+module.exports = mongoose.model("achievement", Achievement)

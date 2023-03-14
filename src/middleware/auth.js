@@ -2,7 +2,7 @@ const { generateAPIError } = require("../errors/apiError")
 const User = require("../models/User")
 const { RoleEnum } = require("../utils/enum")
 const { verifyAccessKey } = require("../utils/key")
-const errorWrapper = require("./errorWrapper")
+const {errorWrapper} = require("./errorWrapper")
 
 const auth = (roles = Object.values(RoleEnum)) => {
     if (typeof roles === 'string') roles = [roles] // if the param is not an array set the string inside the array
