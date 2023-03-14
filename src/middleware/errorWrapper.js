@@ -20,4 +20,4 @@ const errorWrapper = (fn) => {
     };
   };
   
-  module.exports = errorWrapper;
+  module.exports = {errorWrapper};

@@ -1,19 +1,34 @@
 const { generateAPIError } = require("../../errors/apiError");
-const errorWrapper = require("../../middleware/errorWrapper");
+const {errorWrapper} = require("../../middleware/errorWrapper");
+const { generateAPIError } = require("../../errors/apiError");
+const { RoleEnum } = require("../../utils/enum");
+const User = require('../../models/User')
+const { compare } = require("../../utils/bcrypt");
+const { signAccessKey } = require("../../utils/key");
 
-module.exports.login = errorWrapper(async(req, res, next)=>{
-    // logic
+const adminLogin = errorWrapper(async (req, res, next) => {
+    const { email, password } = req.body
+    const admin = await User.findOne({ email, role: { "$in": [RoleEnum.ADMIN] } })
+    if(admin && await compare(password, admin.password)===true){
+        
+        const accessKey = signAccessKey({
+            id: admin._id
+        }, process.env.ACCESS_SECRET)
 
-
-    // success response like 200, 201
-
-    // return res.status(200).json({
-    //     success: true,
-    //     message: "a message",
-    //     data: null
-    // })
-
-
-    // err response like 500, 404, 403, 401
-    // return next(generateAPIError('some err', 400))
+        return res.status(200).json({
+            success: true,
+            message: 'sucessfully loggedin',
+            data: {
+                userId: admin.id,
+                name: admin.name,
+                email: admin.email,
+                role: admin.role,
+                accessKey
+            }
+        })
+    }else return next(generateAPIError('Invalid email id or password', 400))
 })
+
+module.exports = {
+    adminLogin
+}
