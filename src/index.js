@@ -14,7 +14,7 @@ const mongoSanitize = require("express-mongo-sanitize");
 const notFoundMiddleware = require("./middleware/notFound");
 const fileUpload = require("express-fileupload");
 const {errorWrapper} = require("./middleware/errorWrapper");
-
+const cookieParser = require('cookie-parser');
 
 db.connect();
 
@@ -50,6 +50,7 @@ app.use(fileUpload({
 	createParentPath: true,
 	limits: { fileSize: 50 * 1024 * 1024 }
 }));
+app.use(cookieParser());
 
 app.use('/api/v1', errorWrapper(require('./routers/index')))
 app.use(notFoundMiddleware);

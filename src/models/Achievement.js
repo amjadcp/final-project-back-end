@@ -1,11 +1,10 @@
 const mongoose = require('mongoose')
 const validator = require("validator");
 
-const Achievement = mongoose.Schema({
-    user: {
+const achievementSchema = mongoose.Schema({
+    student: {
         type: mongoose.Types.ObjectId,
-        ref: 'user',
-        required: true
+        ref: 'student',
     },
     title: {
         type: String,
@@ -17,5 +16,6 @@ const Achievement = mongoose.Schema({
     }
 })
 
+const Achievement = mongoose.model('achievement', achievementSchema);
 
-module.exports = mongoose.model("achievement", Achievement)
+module.exports = Achievement;
