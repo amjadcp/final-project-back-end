@@ -24,4 +24,26 @@ module.exports = {
             data: null,
         });
     }),
+    getAllStudents : catchAsync(async (req, res, next) => {
+        const students = await Student.find();
+        res.status(200).json({
+            status: 'success',
+            results: students.length,
+            data: {
+                students,
+            },
+        });
+    }),
+    getOneStudent : catchAsync(async (req, res, next) => {
+        const student = await Student.findById(req.params.id);
+        if (!student) {
+            return next(new AppError('No student found with that ID', 404));
+        }
+        res.status(200).json({
+            status: 'success',
+            data: {
+                student,
+            },
+        });
+    }),
 }

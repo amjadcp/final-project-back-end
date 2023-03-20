@@ -23,4 +23,14 @@ module.exports = {
             data: null,
         });
     }),
+    getAllAchievements : catchAsync(async (req, res, next) => {
+        const achievements = await Achievement.find();
+        res.status(200).json({
+            status: 'success',
+            results: achievements.length,
+            data: {
+                achievements,
+            },
+        });
+    }),
 }
