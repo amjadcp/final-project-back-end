@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 module.exports.connect = () => {
-    mongoose.set('strictQuery', false);
+    // mongoose.set('strictQuery', false);
     const db = process.env.DATABASE;
     mongoose.connect(db, {
         useNewUrlParser: true,

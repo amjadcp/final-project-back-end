@@ -1,21 +1,26 @@
 const { generateAPIError } = require("../../errors/apiError");
 const {errorWrapper} = require("../../middleware/errorWrapper");
-const { RoleEnum } = require("../../utils/enum");
+const { RoleEnum, UserEnum } = require("../../utils/enum");
 const User = require('../../models/User')
 const { compare } = require("../../utils/bcrypt");
 const { signAccessKey } = require("../../utils/key");
+const Student = require("../../models/Student");
+const Team = require("../../models/Team");
 
 // here pass the role
-const login = (roles)=>{
-    if (typeof roles === 'string') roles = [roles] // if the param is not an array set the string inside the array
-
+const login = (userType)=>{
     return errorWrapper(async (req, res, next) => {
         const { email, password } = req.body
-        const user = await User.findOne({ email, role: {"$in": roles} })
+        let user
+
+        if(userType===UserEnum.STUDENT) user = await Student.findOne({ email})
+        else if(userType===UserEnum.TEAM) user = await Team.findOne({ email})
+
         if(user && await compare(password, user.password)===true){
             
             const accessKey = signAccessKey({
-                id: user._id
+                id: user._id,
+                userType
             }, process.env.ACCESS_SECRET)
     
             return res.status(200).json({

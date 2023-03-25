@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
-const { RoleEnum, PronounceEnum } = require("../utils/enum");
+const { PronounceEnum } = require("../utils/enum");
 
 // sample use-case
 const User = new mongoose.Schema(
@@ -18,13 +18,6 @@ const User = new mongoose.Schema(
         message: 'role not allowed'
       },
     },
-    role: {
-      type: String,
-      enum: {
-        values: Object.values(RoleEnum),
-        message: 'role not allowed'
-      },
-    },
     email: {
       type: String,
       required: [true, "Please provide email"],
@@ -35,15 +28,9 @@ const User = new mongoose.Schema(
       },
       trim: true,
     },
-    phoneNumber: {
-      type: String,
-      validate: {
-        validator: (val)=>validator.isMobilePhone(val, 'en-IN'),
-        message: "please provide valid phone number"
-      }
-    },
     whatsAppNumber: {
       type: String,
+      unique: true,
       validate: {
         validator: (val)=>validator.isMobilePhone(val, 'en-IN'),
         message: "please provide valid phone number"
@@ -58,11 +45,6 @@ const User = new mongoose.Schema(
       period: String,
       certificate: String
     }],
-    batch: {
-      start: Date,
-      end: Date,
-      period: String // exp: 2021-23
-    },
     description: String,
     password: {
       type: String,
@@ -70,9 +52,8 @@ const User = new mongoose.Schema(
       minlength: 6,
       trim: true,
     },
-
-
   },
+  { discriminatorKey: 'userType'},
   { timestamps: true }
 );
 
