@@ -1,13 +1,12 @@
 const AdminJS = require('adminjs')
 const AdminJSExpress = require('@adminjs/express')
 const { Database, Resource } = require("@adminjs/mongoose");
-const User = require("../../models/User");
-const Achievement = require("../../models/Achievement");
 const { hash } = require('../bcrypt');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const Student = require('../../models/Student');
 const Team = require('../../models/Team');
+const Broadcast = require('../../models/Broadcast');
 const { UserEnum } = require('../enum');
 
 AdminJS.registerAdapter({
@@ -77,6 +76,9 @@ const admin = new AdminJS({
                     }
                 },
             }
+        }, 
+        {
+            resource: Broadcast,
         }, 
     ],
 })
