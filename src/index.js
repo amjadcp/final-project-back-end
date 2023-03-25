@@ -15,10 +15,11 @@ const notFoundMiddleware = require("./middleware/notFound");
 const fileUpload = require("express-fileupload");
 const {errorWrapper} = require("./middleware/errorWrapper");
 const cookieParser = require('cookie-parser');
+const { adminRootPath, adminRouter } = require("./utils/adminjs");
 
 db.connect();
 
-const whitelist = ["http://127.0.0.1:3000", "localhost", "http://localhost:3000"];
+const whitelist = ["http://127.0.0.1:3000", "localhost", "http://localhost:3000", "http://127.0.0.1:5000"];
 
 app.set("trust proxy", 1); // trust first proxy
 
@@ -42,19 +43,20 @@ app.use(cors(corsOptions));
 app.use(express.json({
 	type: ["application/json", "text/plain"],
 }));
-app.use(helmet());
-app.use(xss());
-app.use(mongoSanitize());
+// app.use(helmet());
+// app.use(xss());
+// app.use(mongoSanitize());
 app.use(morgan("tiny"));
-app.use(fileUpload({ 
-	createParentPath: true,
-	limits: { fileSize: 50 * 1024 * 1024 }
-}));
-app.use(cookieParser());
+// app.use(fileUpload({ 
+// 	createParentPath: true,
+// 	limits: { fileSize: 50 * 1024 * 1024 }
+// }));
+// app.use(cookieParser());
+app.use(adminRootPath, adminRouter)
+
 
 app.use('/api/v1', errorWrapper(require('./routers/index')))
 app.use(notFoundMiddleware);
 app.use(require("./middleware/errorHandler"));
 const port = process.env.PORT || 5000;
-
 app.listen(port, () => console.log("Server Running on " + `${port}`));

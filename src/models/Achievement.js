@@ -4,7 +4,7 @@ const validator = require("validator");
 const achievementSchema = mongoose.Schema({
     student: {
         type: mongoose.Types.ObjectId,
-        ref: 'student',
+        ref: 'user',
     },
     title: {
         type: String,
