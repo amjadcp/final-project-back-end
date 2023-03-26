@@ -15,13 +15,13 @@ const login = (userType)=>{
 
         if(userType===UserEnum.STUDENT) user = await Student.findOne({ email})
         else if(userType===UserEnum.TEAM) user = await Team.findOne({ email})
-
+        console.log(user);
         if(user && await compare(password, user.password)===true){
             
             const accessKey = signAccessKey({
                 id: user._id,
                 userType
-            }, process.env.ACCESS_SECRET)
+            }, process.env.JWT_SECRET)
     
             return res.status(200).json({
                 success: true,

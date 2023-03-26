@@ -2,7 +2,7 @@ const { generateAPIError } = require("../../errors/apiError");
 const { errorWrapper } = require("../../middleware/errorWrapper");
 const Student = require("../../models/Student");
 const Team = require("../../models/Team");
-const { RoleEnum } = require("../../utils/enum");
+const { UserEnum } = require("../../utils/enum");
 
 
 const getProfile = (userType)=>{

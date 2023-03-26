@@ -13,13 +13,14 @@ const auth = (roles = []) => {
         // console.log(req.headers['user-agent']);
         const accessKey = req.headers.authorization && req.headers.authorization.split(" ")[1]
         if (accessKey == null) return next(generateAPIError('Key unavailable', 401))
-        const payload = verifyAccessKey(accessKey, process.env.ACCESS_SECRET)
-
+        const payload = verifyAccessKey(accessKey, process.env.JWT_SECRET)
         let user
         if(payload?.userType===UserEnum.STUDENT) user = await Student.findOne({_id: payload.id}).select("name email role")
         else if(payload?.userType===UserEnum.TEAM) user = await Team.findOne({_id: payload.id}).select("name email role")
-
-        if (user & (roles.indexOf(user.role)!==-1 || roles.length===0)) next()
+        if (user && (roles.indexOf(user.role)!==-1 || roles.length===0)){
+            req.user = user
+            next()
+        }
         else return next(generateAPIError('Unauthorized', 401))
     })
 

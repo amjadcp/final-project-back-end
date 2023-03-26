@@ -22,7 +22,8 @@ const Student = new mongoose.Schema(
       enum: {
         values: Object.values(StudentRoleEnum),
         message: "Invalid role"
-      }
+      },
+      default: StudentRoleEnum.STUDENT
     },
     isActive: {
       type: Boolean,

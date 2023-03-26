@@ -6,6 +6,7 @@ const hash = async(value) =>{
 }
 
 const compare = async(value, hashValue)=>{
+    console.log(value, hashValue);
     return await bcrypt.compare(value, hashValue)
 }
 
