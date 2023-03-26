@@ -57,4 +57,10 @@ const User = new mongoose.Schema(
   { timestamps: true }
 );
 
+User.statics.getEmails = async function(userType){
+  const users = await this.find({userType}).select("email")
+  const emails = users.map(user=>user?.email)
+  return emails
+}
+
 module.exports = mongoose.model("user", User);

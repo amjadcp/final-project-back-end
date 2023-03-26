@@ -8,6 +8,8 @@ const Student = require('../../models/Student');
 const Team = require('../../models/Team');
 const Broadcast = require('../../models/Broadcast');
 const { UserEnum } = require('../enum');
+const User = require('../../models/User');
+const { sendEmail } = require('../sendMsg');
 
 AdminJS.registerAdapter({
 	Database,
@@ -79,6 +81,41 @@ const admin = new AdminJS({
         }, 
         {
             resource: Broadcast,
+            options: {
+                properties: {
+                    message: {
+                        type: 'richtext'
+                    },
+                    date: {
+                        isVisible: false
+                    },
+                    keepAs: {
+                        description: "Email only send after it set as Published"
+                    }
+                },
+                actions: {
+                    edit: {
+                        before: async(req)=>{
+                            const {message, keepAs, target, subject} = req.payload
+                            if(keepAs==='Published'){
+                                const emails = await User.getEmails(target)
+                                sendEmail(emails, message, subject)
+                            }
+                            return req
+                        }
+                    },
+                    new: {
+                        before: async(req)=>{
+                            const {message, keepAs, target, subject} = req.payload
+                            if(keepAs==='Published'){
+                                const emails = await User.getEmails(target)
+                                sendEmail(emails, message, subject)
+                            }
+                            return req
+                        }
+                    }
+                },
+            }
         }, 
     ],
 })
