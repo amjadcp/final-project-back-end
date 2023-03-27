@@ -19,7 +19,7 @@ const { adminRootPath, adminRouter } = require("./utils/adminjs");
 
 db.connect();
 
-const whitelist = ["http://127.0.0.1:3000", "localhost", "http://localhost:3000", "http://127.0.0.1:5000"];
+const whitelist = ["http://127.0.0.1:3000", "localhost", "http://localhost:3000", "http://127.0.0.1:5000", "https://defofvocation-sd-student-management.onrender.com"];
 
 app.set("trust proxy", 1); // trust first proxy
 
