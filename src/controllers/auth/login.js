@@ -15,9 +15,9 @@ const login = (userType)=>{
 
         if(userType===UserEnum.STUDENT) user = await Student.findOne({ email})
         else if(userType===UserEnum.TEAM) user = await Team.findOne({ email})
-        console.log(user);
+        
         if(user && await compare(password, user.password)===true){
-            
+            if(user.isActive===false) return next(generateAPIError('Plase wait for admin approval', 400))
             const accessKey = signAccessKey({
                 id: user._id,
                 userType
