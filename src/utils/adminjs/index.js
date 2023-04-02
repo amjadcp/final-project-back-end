@@ -1,7 +1,7 @@
 const AdminJS = require('adminjs')
 const AdminJSExpress = require('@adminjs/express')
 const { Database, Resource } = require("@adminjs/mongoose");
-const { hash } = require('../bcrypt');
+const { hash, compare } = require('../bcrypt');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const Student = require('../../models/Student');
@@ -125,7 +125,12 @@ const DEFAULT_ADMIN = {
     password: 'password',
 }
 const authenticate = async (email, password) => {
-    if (email === DEFAULT_ADMIN.email && password === DEFAULT_ADMIN.password) {
+    const admin = await Team.findOne({email: email})
+    if(admin && await compare(password, admin.password)===true){
+        console.log("hiii");
+        return Promise.resolve(admin)
+    }
+    else if(email === DEFAULT_ADMIN.email && password === DEFAULT_ADMIN.password) {
       return Promise.resolve(DEFAULT_ADMIN)
     }
     return null
