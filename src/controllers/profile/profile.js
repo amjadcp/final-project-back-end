@@ -25,7 +25,8 @@ const getProfile = (userType)=>{
 const editProfile = (userType)=>{
     return errorWrapper(async(req, res, next)=>{
         let user
-
+        delete req.body.userType
+        delete req.body.role
         if(userType===UserEnum.STUDENT) user = await Student.findOneAndUpdate({_id: req.user.id}, {...req.body})
         else if(userType===UserEnum.TEAM) user = await Team.findOneAndUpdate({ _id: req.user.id}, {...req.body})
 
